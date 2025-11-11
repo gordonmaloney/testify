@@ -1,0 +1,21 @@
+# netlify.toml
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# If monorepo, set the base so Netlify runs commands in that folder:
+# [build]
+#   base = "apps/web"
+#   command = "npm run build"
+#   publish = "apps/web/dist"
+
+# Single-page app routing (avoid 404 on client-side routes)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Cache node_modules between builds for speed
+[build.environment]
+  NPM_FLAGS = "--legacy-peer-deps" # (only if needed)
+  NODE_VERSION = "20"
