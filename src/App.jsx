@@ -27,10 +27,10 @@ function prettyTs(ts) {
 function EventCard({ ev }) {
   const cd = ev.contactDeets || {};
   return (
-    <div className="rounded-2xl border p-4 shadow-sm bg-white"
-    style={{border: '1px solid white', margin: '5px', padding: '5px'}}
+    <div
+      className="rounded-2xl border p-4 shadow-sm bg-white"
+      style={{ border: "1px solid white", margin: "5px", padding: "5px" }}
     >
-
       <div className="mt-2 text-lg font-semibold">
         {ev.site} · {ev.type} · {ev.path}
       </div>
@@ -41,11 +41,13 @@ function EventCard({ ev }) {
             Campaign - {ev.campaignId || "—"}
           </div>
         </div>
-        <div className="text-sm">
-          <div>Name: {cd.name || "—"}</div>
-          <div>Email: {cd.email || "—"}</div>
-          <div>Phone: {cd.number || cd.phone || "—"}</div>
-        </div>
+        {cd.name && (
+          <div className="text-sm">
+            <div>Name: {cd.name || "—"}</div>
+            <div>Email: {cd.email || "—"}</div>
+            <div>Phone: {cd.number || cd.phone || "—"}</div>
+          </div>
+        )}
       </div>
 
       {ev.testimonial ? (
