@@ -27,35 +27,24 @@ function prettyTs(ts) {
 function EventCard({ ev }) {
   const cd = ev.contactDeets || {};
   return (
-    <div className="rounded-2xl border p-4 shadow-sm bg-white">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-500">{ev._id}</div>
-        <div className="text-xs text-gray-400">{prettyTs(ev.ts)}</div>
-      </div>
+    <div className="rounded-2xl border p-4 shadow-sm bg-white"
+    style={{border: '1px solid white', margin: '5px', padding: '5px'}}
+    >
+
       <div className="mt-2 text-lg font-semibold">
-        {ev.site} · {ev.type}
+        {ev.site} · {ev.type} · {ev.path}
       </div>
-      <div className="text-sm text-gray-700">{ev.path}</div>
 
       <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="text-sm">
-          <div className="font-medium text-gray-500">Campaign</div>
-          <div>{ev.campaignId || "—"}</div>
+          <div className="font-medium text-gray-500">
+            Campaign - {ev.campaignId || "—"}
+          </div>
         </div>
         <div className="text-sm">
-          <div className="font-medium text-gray-500">Contact</div>
           <div>Name: {cd.name || "—"}</div>
           <div>Email: {cd.email || "—"}</div>
           <div>Phone: {cd.number || cd.phone || "—"}</div>
-        </div>
-        <div className="text-sm">
-          <div className="font-medium text-gray-500">UA / Ref</div>
-          <div className="truncate" title={ev.userAgent}>
-            {ev.userAgent || "—"}
-          </div>
-          <div className="truncate" title={ev.ref}>
-            {ev.ref || "—"}
-          </div>
         </div>
       </div>
 
