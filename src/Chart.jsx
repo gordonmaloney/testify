@@ -9,7 +9,7 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 
-const Chart = ({ events }) => {
+const Chart = ({ title, events }) => {
 	if (!events || events.length === 0) return <p>No events found.</p>;
 
 	const countsByDay = {};
@@ -61,7 +61,7 @@ const Chart = ({ events }) => {
 				boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
 			}}
 		>
-			<h3 style={{ marginBottom: "0.75rem" }}>Events per day</h3>
+			<h3 style={{ marginBottom: "0.75rem" }}>{title}</h3>
 
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart

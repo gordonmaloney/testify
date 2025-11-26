@@ -38,10 +38,10 @@ function EventCard({ ev }) {
 				padding: "5px",
 				display: "flex",
 				flexDirection: "row",
-        border: '1px solid black',
+				border: "1px solid black",
 			}}
 		>
-			<div style={{width: '600px'}}>
+			<div style={{ width: "600px" }}>
 				<div className="mt-2 text-lg font-semibold">
 					{ev.site} · {ev.type} · {ev.path}
 				</div>
@@ -67,11 +67,13 @@ function EventCard({ ev }) {
 						<summary className="cursor-pointer select-none text-gray-600">
 							Testimonial
 						</summary>
-						<pre className="mt-2 whitespace-pre-wrap break-words bg-gray-50 p-2 rounded-lg text-xs">
-							{typeof ev.testimonial === "string"
-								? ev.testimonial
-								: JSON.stringify(ev.testimonial, null, 2)}
-						</pre>
+						<div
+							style={{whiteSpace: 'pre-wrap', backgroundColor: 'lightblue'}}
+							className="mt-2 whitespace-pre-wrap break-words bg-gray-50 p-2 rounded-lg text-xs">
+								{typeof ev.testimonial === "string"
+									? ev.testimonial
+									: JSON.stringify(ev.testimonial, null, 2)}
+						</div>
 					</details>
 				) : null}
 			</div>
@@ -177,11 +179,9 @@ export default function App() {
 	}
 
 	useEffect(() => {
-	//	setEvents(DummyData);
+			//setEvents(DummyData);
 	}, [error]);
 
-
-	
 	return (
 		<div className="min-h-screen bg-gray-50 text-gray-900">
 			<div className="max-w-5xl mx-auto">
@@ -215,10 +215,12 @@ export default function App() {
 					)}
 
 					<div className="grid gap-3">
-						<Chart events={events} />
+						<Chart
+							title="Page views"
+							events={events.filter(ev => ev.type == "page_view")} />
 						<br />
 						<br />
-						
+
 						{events.map((ev) => (
 							<EventCard key={ev._id} ev={ev} />
 						))}
