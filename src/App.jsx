@@ -33,7 +33,6 @@ function EventCard({ ev }) {
 		<div
 			className="rounded-2xl border p-4 shadow-sm bg-white"
 			style={{
-				border: "1px solid white",
 				margin: "8px",
 				padding: "5px",
 				display: "flex",
