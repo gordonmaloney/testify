@@ -176,7 +176,7 @@ export default function App() {
 	}
 
 	useEffect(() => {
-		setEvents(DummyData);
+	//	setEvents(DummyData);
 	}, [error]);
 
 	return (
