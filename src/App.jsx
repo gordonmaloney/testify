@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { DummyData } from "./DummyData";
 import MiniMap from "./MiniMap";
+import Chart from "./Chart";
 
 /**
  * Barebones React (Vite) frontend to:
@@ -179,6 +180,8 @@ export default function App() {
 	//	setEvents(DummyData);
 	}, [error]);
 
+
+	
 	return (
 		<div className="min-h-screen bg-gray-50 text-gray-900">
 			<div className="max-w-5xl mx-auto">
@@ -212,6 +215,10 @@ export default function App() {
 					)}
 
 					<div className="grid gap-3">
+						<Chart events={events} />
+						<br />
+						<br />
+						
 						{events.map((ev) => (
 							<EventCard key={ev._id} ev={ev} />
 						))}
