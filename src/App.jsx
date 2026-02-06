@@ -24,6 +24,30 @@ function prettyTs(ts) {
   }
 }
 
+function formatMonth(str) {
+  if (!str || typeof str !== "string") return str;
+  const [y, m] = str.split("-");
+  if (!y || !m) return str;
+  const date = new Date(parseInt(y), parseInt(m) - 1);
+  if (isNaN(date.getTime())) return str;
+  return date.toLocaleString("default", { month: "short", year: "numeric" });
+}
+
+function MarkdownText({ text }) {
+  if (typeof text !== "string") return text;
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return (
+    <span>
+      {parts.map((part, i) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return <strong key={i}>{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      })}
+    </span>
+  );
+}
+
 function EventCard({ ev }) {
   const cd = ev.contactDeets || {};
   return (
@@ -60,6 +84,40 @@ function EventCard({ ev }) {
               ? ev.testimonial
               : JSON.stringify(ev.testimonial, null, 2)}
           </pre>
+        </details>
+      ) : null}
+
+      {ev.complaintDeets ? (
+        <details className="mt-3 text-sm" open={!!ev.complaintDeets.standards}>
+          <summary className="cursor-pointer select-none text-gray-600 font-medium">
+            Complaint Details
+          </summary>
+          <div className="mt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
+            {ev.complaintDeets.standards &&
+            Array.isArray(ev.complaintDeets.standards) ? (
+              <div className="space-y-3">
+                <div className="flex gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <span>
+                    {formatMonth(ev.complaintDeets.dateStart)} –{" "}
+                    {formatMonth(ev.complaintDeets.dateEnd)}
+                  </span>
+                </div>
+                <ul className="list-disc ml-4 space-y-1.5 text-gray-700">
+                  {ev.complaintDeets.standards.map((s, i) => (
+                    <li key={i}>
+                      <MarkdownText text={s} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <pre className="whitespace-pre-wrap break-words text-xs text-gray-600">
+                {typeof ev.complaintDeets === "string"
+                  ? ev.complaintDeets
+                  : JSON.stringify(ev.complaintDeets, null, 2)}
+              </pre>
+            )}
+          </div>
         </details>
       ) : null}
     </div>
