@@ -86,6 +86,8 @@ function EventCard({ ev }) {
           )}
         </div>
 
+        {cd.postcode && <MiniMap postcode={cd.postcode} />}
+
         {ev.testimonial ? (
           <details className="mt-3 text-sm">
             <summary className="cursor-pointer select-none text-gray-600">
