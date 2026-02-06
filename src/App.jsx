@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { DummyData } from "./DummyData";
+import MiniMap from "./MiniMap";
+import Chart from "./Chart";
+
 /**
  * Barebones React (Vite) frontend to:
  *  - enter password (Bearer token)
@@ -53,73 +57,85 @@ function EventCard({ ev }) {
   return (
     <div
       className="rounded-2xl border p-4 shadow-sm bg-white"
-      style={{ border: "1px solid white", margin: "5px", padding: "5px" }}
+      style={{
+        margin: "8px",
+        padding: "5px",
+        display: "flex",
+        flexDirection: "row",
+        border: "1px solid black",
+      }}
     >
-      <div className="mt-2 text-lg font-semibold">
-        {ev.site} · {ev.type} · {ev.path}
-      </div>
-
-      <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div className="text-sm">
-          <div className="font-medium text-gray-500">
-            Campaign - {ev.campaignId || "—"}
-          </div>
+      <div style={{ width: "600px" }}>
+        <div className="mt-2 text-lg font-semibold">
+          {ev.site} · {ev.type} · {ev.path}
         </div>
-        {cd.name && (
+
+        <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
           <div className="text-sm">
-            <div>Name: {cd.name || "—"}</div>
-            <div>Email: {cd.email || "—"}</div>
-            <div>Phone: {cd.number || cd.phone || "—"}</div>
+            <div className="font-medium text-gray-500">
+              Campaign - {ev.campaignId || "—"}
+            </div>
           </div>
-        )}
-      </div>
+          {cd.name && (
+            <div className="text-sm">
+              <div>Name: {cd.name || "—"}</div>
+              <div>Email: {cd.email || "—"}</div>
+              <div>Phone: {cd.number || cd.phone || "—"}</div>
+              <div>Postcode: {cd.postcode || "—"}</div>
+            </div>
+          )}
+        </div>
 
-      {ev.testimonial ? (
-        <details className="mt-3 text-sm">
-          <summary className="cursor-pointer select-none text-gray-600">
-            Testimonial
-          </summary>
-          <pre className="mt-2 whitespace-pre-wrap break-words bg-gray-50 p-2 rounded-lg text-xs">
-            {typeof ev.testimonial === "string"
-              ? ev.testimonial
-              : JSON.stringify(ev.testimonial, null, 2)}
-          </pre>
-        </details>
-      ) : null}
+        {ev.testimonial ? (
+          <details className="mt-3 text-sm">
+            <summary className="cursor-pointer select-none text-gray-600">
+              Testimonial
+            </summary>
+            <pre className="mt-2 whitespace-pre-wrap break-words bg-gray-50 p-2 rounded-lg text-xs">
+              {typeof ev.testimonial === "string"
+                ? ev.testimonial
+                : JSON.stringify(ev.testimonial, null, 2)}
+            </pre>
+          </details>
+        ) : null}
 
-      {ev.complaintDeets ? (
-        <details className="mt-3 text-sm" open={!!ev.complaintDeets.standards}>
-          <summary className="cursor-pointer select-none text-gray-600 font-medium">
-            Complaint Details
-          </summary>
-          <div className="mt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
-            {ev.complaintDeets.standards &&
-            Array.isArray(ev.complaintDeets.standards) ? (
-              <div className="space-y-3">
-                <div className="flex gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  <span>
-                    {formatMonth(ev.complaintDeets.dateStart)} –{" "}
-                    {formatMonth(ev.complaintDeets.dateEnd)}
-                  </span>
+        {ev.complaintDeets ? (
+          <details
+            className="mt-3 text-sm"
+            open={!!ev.complaintDeets.standards}
+          >
+            <summary className="cursor-pointer select-none text-gray-600 font-medium">
+              Complaint Details
+            </summary>
+            <div className="mt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
+              {ev.complaintDeets.standards &&
+              Array.isArray(ev.complaintDeets.standards) ? (
+                <div className="space-y-3">
+                  <div className="flex gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    <span>
+                      {formatMonth(ev.complaintDeets.dateStart)} –{" "}
+                      {formatMonth(ev.complaintDeets.dateEnd)}
+                    </span>
+                  </div>
+                  <ul className="list-disc ml-4 space-y-1.5 text-gray-700">
+                    {ev.complaintDeets.standards.map((s, i) => (
+                      <li key={i}>
+                        <MarkdownText text={s} />
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="list-disc ml-4 space-y-1.5 text-gray-700">
-                  {ev.complaintDeets.standards.map((s, i) => (
-                    <li key={i}>
-                      <MarkdownText text={s} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <pre className="whitespace-pre-wrap break-words text-xs text-gray-600">
-                {typeof ev.complaintDeets === "string"
-                  ? ev.complaintDeets
-                  : JSON.stringify(ev.complaintDeets, null, 2)}
-              </pre>
-            )}
-          </div>
-        </details>
-      ) : null}
+              ) : (
+                <pre className="whitespace-pre-wrap break-words text-xs text-gray-600">
+                  {typeof ev.complaintDeets === "string"
+                    ? ev.complaintDeets
+                    : JSON.stringify(ev.complaintDeets, null, 2)}
+                </pre>
+              )}
+            </div>
+          </details>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -219,6 +235,10 @@ export default function App() {
     }
   }
 
+  useEffect(() => {
+    //setEvents(DummyData);
+  }, [error]);
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <div className="max-w-5xl mx-auto">
@@ -252,6 +272,13 @@ export default function App() {
           )}
 
           <div className="grid gap-3">
+            <Chart
+              title="Page views"
+              events={events.filter((ev) => ev.type == "page_view")}
+            />
+            <br />
+            <br />
+
             {events.map((ev) => (
               <EventCard key={ev._id} ev={ev} />
             ))}
