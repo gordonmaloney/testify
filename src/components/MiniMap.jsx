@@ -48,7 +48,6 @@ const MiniMap = ({ postcode }) => {
 					throw new Error(`No latlng found for ${cleaned}`)
 				}
 				setLatLng([json.result.latitude, json.result.longitude])
-				console.log([json.result.latitude, json.result.longitude])
 			} catch (err) {
 				setLatLng(LAT_LONG)
 				setError(err.message);
