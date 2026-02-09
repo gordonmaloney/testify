@@ -26,17 +26,10 @@ export default function Controls({
   }, [site])
 
   return (
-    <div className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
-      <div className="p-4 flex flex-col gap-3 md:flex-row">
-        <input
-          className="md:flex-1 rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          type="password"
-          placeholder="Bearer password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+    <div className="sticky top-0 z-10 bg-white">
+      <div className="py-4 flex flex-col gap-2 md:flex-row md:flex-wrap">
         <select
-          className="flex-1 rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex-1 rounded-sm border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           value={site}
           onChange={(e) => setSite(e.target.value)}
         >
@@ -46,7 +39,7 @@ export default function Controls({
           ))}
         </select>
         <select
-          className="flex-1 rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex-1 rounded-sm border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
@@ -56,7 +49,7 @@ export default function Controls({
           ))}
         </select>
         <select
-          className="flex-1 rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex-1 rounded-sm border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           value={path}
           onChange={(e) => setPath(e.target.value)}
         >
@@ -66,7 +59,7 @@ export default function Controls({
           ))}
         </select>
         <input
-          className="flex-initial rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="flex-initial rounded-sm border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           type="number"
           min={1}
           max={200}
@@ -77,7 +70,7 @@ export default function Controls({
         <button
           onClick={onFetch}
           disabled={loading || !password}
-          className="flex-initial rounded-xl px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50"
+          className="flex-initial rounded-sm px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50"
         >
           {loading ? "Loading…" : "Fetch"}
         </button>
