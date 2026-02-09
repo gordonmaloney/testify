@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { DummyData } from "./DummyData";
 import MiniMap from "./MiniMap";
 import Chart from "./Chart";
+import Controls from "./components/Controls";
 
 /**
  * Barebones React (Vite) frontend to:
@@ -141,56 +142,11 @@ function EventCard({ ev }) {
   );
 }
 
-function Controls({
-  password,
-  setPassword,
-  site,
-  setSite,
-  limit,
-  setLimit,
-  onFetch,
-  loading,
-}) {
-  return (
-    <div className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
-      <div className="max-w-5xl mx-auto p-4 grid gap-3 md:grid-cols-5">
-        <input
-          className="md:col-span-2 rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          type="password"
-          placeholder="Bearer password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          className="rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          placeholder="site (optional)"
-          value={site}
-          onChange={(e) => setSite(e.target.value)}
-        />
-        <input
-          className="rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          type="number"
-          min={1}
-          max={200}
-          placeholder="limit"
-          value={limit}
-          onChange={(e) => setLimit(Number(e.target.value || 0))}
-        />
-        <button
-          onClick={onFetch}
-          disabled={loading || !password}
-          className="rounded-xl px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50"
-        >
-          {loading ? "Loading…" : "Fetch"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export default function App() {
   const [password, setPassword] = useState("");
   const [site, setSite] = useState("");
+  const [type, setType] = useState("");
+  const [path, setPath] = useState("");
   const [limit, setLimit] = useState(20);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -209,8 +165,10 @@ export default function App() {
     const p = new URLSearchParams();
     if (site) p.set("site", site);
     if (limit) p.set("limit", String(limit));
+    if (type) p.set("type", type)
+    if (path) p.set("path", path)
     return p.toString();
-  }, [site, limit]);
+  }, [site, limit, type, path]);
 
   async function fetchEvents() {
     setLoading(true);
@@ -249,6 +207,10 @@ export default function App() {
           setPassword={setPassword}
           site={site}
           setSite={setSite}
+          type={type}
+          setType={setType}
+          path={path}
+          setPath={setPath}
           limit={limit}
           setLimit={setLimit}
           onFetch={fetchEvents}
