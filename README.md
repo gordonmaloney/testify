@@ -1,16 +1,31 @@
-# React + Vite
+# Testify
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This app is a frontend to view records in the [TenantAct](https://github.com/gordonmaloney/tenantactAPI) database.
 
-Currently, two official plugins are available:
+## Usage
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This app uses [Node.js](https://nodejs.org) and [React](https://react.dev/). To use this app, you must be running an instance of the [TenantAct API](https://github.com/gordonmaloney/tenantactAPI).
 
-## React Compiler
+After cloning this repository, copy the `.env.example` to `.env` and set the environment variables.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+# Should match the URL and password where
+# the TenantAct API is running
+# See: https://github.com/gordonmaloney/tenantactAPI
+VITE_API_BASE=http://localhost:3000
+VITE_PASSWORD=password
+```
 
-## Expanding the ESLint configuration
+Install dependencies.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+npm install
+```
+
+Launch the site for local development.
+
+```
+npm run dev
+```
+
+If you see the message, `Something is already running on port 3000`, type `Y` to use another port. The app will be running at `http://localhost:3001` or a similar URL.

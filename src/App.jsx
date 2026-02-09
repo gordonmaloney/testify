@@ -17,8 +17,7 @@ import Chart from "./Chart";
  *  3) `npm i`
  *  4) `npm run dev`
  */
-
-const API_BASE = "https://tenantactapi.vercel.app"; // change to your API origin if needed
+const API_BASE = import.meta.env.VITE_API_BASE; // set in .env file
 
 function prettyTs(ts) {
 	try {
