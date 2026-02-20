@@ -50,39 +50,31 @@ const Chart = ({ title, events }) => {
 	}
 
 	return (
-		<div
-			style={{
-				width: "100%",
-				height: 350,
-				padding: "1rem",
-				borderRadius: "12px",
-				border: "1px solid #e5e7eb",
-				background: "#ffffff",
-				boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
-			}}
-		>
-			<h3 style={{ marginBottom: "0.75rem" }}>{title}</h3>
-
+		<div className="w-full h-48 text-white">
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart
 					data={chartData}
-					margin={{ top: 10, right: 20, bottom: 10, left: 0 }}
+					margin={{ top: 10, right: 20, bottom: 10, left: -20 }}
 				>
 					<CartesianGrid strokeDasharray="3 3" vertical={false} />
 					<XAxis
 						dataKey="label"
-						tick={{ fontSize: 12 }}
+						tick={{ fill: '#ffffff', fontSize: 12 }}
 						tickMargin={8}
 						interval="preserveStartEnd"
 					/>
-					<YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+					<YAxis allowDecimals={false} tick={{ fill: '#ffffff', fontSize: 12 }} />
 					<Tooltip
+						cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }}
 						formatter={(value) => [`${value} events`, "Count"]}
 						labelFormatter={(label, payload) =>
 							payload?.[0]?.payload?.date || label
 						}
+						contentStyle={{
+							background: 'var(--color-gray-800)',
+						}}
 					/>
-					<Bar dataKey="count" radius={[4, 4, 0, 0]} />
+					<Bar fill="#ffffff" dataKey="count" />
 				</BarChart>
 			</ResponsiveContainer>
 		</div>
