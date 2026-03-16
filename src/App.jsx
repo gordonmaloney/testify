@@ -5,6 +5,7 @@ import MiniMap from "./components/MiniMap";
 import Chart from "./components/Chart";
 import Controls from "./components/Controls";
 import EventCard from "./components/EventCard";
+import TwoFactorModal from "./components/TwoFactorModal";
 
 /**
  * Barebones React (Vite) frontend to:
@@ -32,6 +33,8 @@ export default function App() {
   const [postcode, setPostcode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [tfaCode, setTfaCode] = useState("");
+  const [show2FAModal, setShow2FAModal] = useState(false);
 
   // load/save password locally so you don't retype during dev
   useEffect(() => {
@@ -55,12 +58,29 @@ export default function App() {
     setLoading(true);
     setError("");
     try {
+      const headers = {
+        Authorization: `Bearer ${password}`,
+        Accept: "application/json",
+      };
+
+      if (tfaCode) {
+        headers["X-2f-Code"] = tfaCode;
+      }
+
       const res = await fetch(`${API_BASE}/api/fetch?${query}`, {
-        headers: {
-          Authorization: `Bearer ${password}`,
-          Accept: "application/json",
-        },
+        headers,
       });
+
+      if (res.status === 401) {
+        const text = await res.text();
+        if (text.toLowerCase().includes("2fa")) {
+          setShow2FAModal(true);
+          setLoading(false);
+          return;
+        }
+        throw new Error(`401 Unauthorized: ${text}`);
+      }
+
       if (!res.ok) {
         const text = await res.text();
         throw new Error(`${res.status} ${res.statusText}: ${text}`);
@@ -142,6 +162,17 @@ export default function App() {
           <EventCard key={ev._id} ev={ev} setPostcode={setPostcode} />
         ))}
       </div>
+
+      <TwoFactorModal
+        isOpen={show2FAModal}
+        onCancel={() => setShow2FAModal(false)}
+        onSubmit={(code) => {
+          setTfaCode(code);
+          setShow2FAModal(false);
+          // Auto-trigger fetch again with the new code
+          setTimeout(fetchEvents, 0);
+        }}
+      />
     </main>
   );
 }
