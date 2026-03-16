@@ -54,7 +54,7 @@ export default function App() {
     return p.toString();
   }, [site, limit, type, path]);
 
-  async function fetchEvents() {
+  async function fetchEvents(overwritingCode) {
     setLoading(true);
     setError("");
     try {
@@ -63,8 +63,9 @@ export default function App() {
         Accept: "application/json",
       };
 
-      if (tfaCode) {
-        headers["X-2f-Code"] = tfaCode;
+      const activeCode = overwritingCode || tfaCode;
+      if (activeCode) {
+        headers["X-2f-Code"] = activeCode;
       }
 
       const res = await fetch(`${API_BASE}/api/fetch?${query}`, {
@@ -173,8 +174,8 @@ export default function App() {
         onSubmit={(code) => {
           setTfaCode(code);
           setShow2FAModal(false);
-          // Auto-trigger fetch again with the new code
-          setTimeout(fetchEvents, 0);
+          // Pass the code directly to avoid closure/stale state issues
+          fetchEvents(code);
         }}
       />
     </main>
