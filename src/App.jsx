@@ -71,18 +71,22 @@ export default function App() {
         headers,
       });
 
-      if (res.status === 401) {
+      if (!res.ok) {
         const text = await res.text();
-        if (text.toLowerCase().includes("2fa")) {
+        
+        // Handle 2FA challenges (both 401 and the specific 500 error)
+        if (res.status === 401 && text.toLowerCase().includes("2fa")) {
           setShow2FAModal(true);
           setLoading(false);
           return;
         }
-        throw new Error(`401 Unauthorized: ${text}`);
-      }
 
-      if (!res.ok) {
-        const text = await res.text();
+        if (text.includes("Token must be 6 digits")) {
+          setShow2FAModal(true);
+          setLoading(false);
+          return;
+        }
+
         throw new Error(`${res.status} ${res.statusText}: ${text}`);
       }
       const json = await res.json();
